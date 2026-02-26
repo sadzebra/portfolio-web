@@ -1,22 +1,7 @@
 import {
-  GitMerge,
   Github,
-  Linkedin,
   ExternalLink,
-  Mail,
-  Terminal,
-  Sparkles,
-  ArrowUpRight,
-  Zap,
-  Coffee,
-  Edit3,
-  Film,
-  ArrowLeft,
-  User,
-  Trophy,
-  Layers,
-  Cpu,
-  FileDown
+  ArrowLeft
 } from 'lucide-react';
 
 const ProjectDetail = ({ project, onBack }) => {
@@ -59,10 +44,14 @@ const ProjectDetail = ({ project, onBack }) => {
             <a href={project.live} target="_blank" className="flex-1 flex items-center justify-center gap-2 bg-slate-900 text-white py-5 rounded-2xl font-bold hover:bg-slate-800 transition-all shadow-lg hover:shadow-slate-900/20 active:scale-95">
               Launch Project <ExternalLink size={18} />
             </a>
-            <a href={project.repo} target="_blank" className="px-8 flex items-center justify-center bg-white border border-black/5 rounded-2xl hover:bg-slate-50 transition-all active:scale-95">
-              <Github size={24} />
-            </a>
-          </div>
+            <a
+              href={project.repo}
+              target="_blank"
+              rel="noreferrer"
+              className="px-6 flex items-center justify-center bg-white border-2 border-slate-200 text-slate-600 rounded-2xl hover:border-slate-900 hover:text-slate-900 transition-all active:scale-95 shadow-sm"
+            >
+              <Github size={20} />
+            </a>          </div>
         </div>
       </div>
     </div>
