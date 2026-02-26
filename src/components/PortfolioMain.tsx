@@ -165,36 +165,19 @@ export default function App() {
             </div>
           </BentoBox>
 
-          <BentoBox
-            title="Toolkit"
-            icon={Code2}
-            bgColor="bg-[#95ADB6]"
-            className="col-span-1 sm:col-span-2 md:col-span-2 lg:col-span-2 lg:row-span-1 border-none min-h-[220px]"
-          >
-            <div className="relative h-full flex flex-col">
-              <div className="mb-4">
-                <span className="text-[10px] font-black uppercase tracking-widest text-slate-800/60 bg-white/20 px-2 py-0.5 rounded-md">
-                  {techStacks[activeStackSlide].category}
-                </span>
-              </div>
-
-              <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-right-2 duration-500">
-                {techStacks[activeStackSlide].skills.map((tech) => (
-                  <span key={tech} className="rounded-xl bg-white/30 px-3 py-1.5 text-xs font-bold text-slate-800 ring-1 ring-white/20">
-                    {tech}
-                  </span>
+          <BentoBox title="Technical Toolkit" icon={Code2} bgColor="bg-[#95ADB6]" className="col-span-1 sm:col-span-2 md:col-span-2 lg:col-span-2 lg:row-span-1 border-none min-h-[240px]">
+            <div className="relative h-full flex flex-col overflow-hidden">
+              <div className="flex transition-transform duration-700 ease-in-out flex-1" style={{ transform: `translateX(-${activeStackSlide * 100}%)` }}>
+                {techStacks.map((stack, index) => (
+                  <div key={index} className="w-full shrink-0">
+                    <div className="mb-4"><span className="text-[10px] font-black uppercase tracking-widest text-slate-800/60 bg-white/20 px-2 py-0.5 rounded-md">{stack.category}</span></div>
+                    <div className="flex flex-wrap gap-2 pr-4">{stack.skills.map((tech) => (<span key={tech} className="rounded-xl bg-white/30 px-3 py-1.5 text-xs font-bold text-slate-800 ring-1 ring-white/20">{tech}</span>))}</div>
+                  </div>
                 ))}
               </div>
-
-              {/* Carousel Controls */}
-              <div className="absolute bottom-0 left-0 flex items-center gap-2 mt-auto pt-4">
+              <div className="flex items-center gap-2 mt-auto pt-6">
                 {techStacks.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setActiveStackSlide(idx)}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${activeStackSlide === idx ? 'w-8 bg-slate-800' : 'w-1.5 bg-slate-800/20'
-                      }`}
-                  />
+                  <button key={idx} onClick={() => setActiveStackSlide(idx)} className={`h-1.5 rounded-full transition-all duration-500 ${activeStackSlide === idx ? 'w-8 bg-slate-800' : 'w-1.5 bg-slate-800/20'}`} />
                 ))}
               </div>
             </div>
