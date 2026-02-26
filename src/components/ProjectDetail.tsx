@@ -1,10 +1,16 @@
+"use client"
+import { useState } from 'react';
 import {
   Github,
   ExternalLink,
-  ArrowLeft
+  ArrowLeft,
+  ImageIcon,
+  Play
 } from 'lucide-react';
 
 const ProjectDetail = ({ project, onBack }) => {
+  const galleryItems = project.gallery || [{ type: 'icon', icon: project.icon }];
+  const [activeMedia, setActiveMedia] = useState(galleryItems[0]);
   return (
     <div className="min-h-screen bg-[#F9F6F4] p-4 md:p-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <button
@@ -12,15 +18,50 @@ const ProjectDetail = ({ project, onBack }) => {
         className="mb-12 flex items-center gap-2 font-bold uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-colors group"
       >
         <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-        Back to Gallery
+        Home
       </button>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
         <div className="lg:col-span-7">
-          <div className={`aspect-video w-full rounded-[3rem] ${project.color} flex items-center justify-center p-12 shadow-2xl`}>
-            <project.icon size={120} className="text-white drop-shadow-lg" />
+          <div className={`aspect-video w-full rounded-[3rem] ${project.color} flex items-center justify-center p-12 shadow-2xl mb-4`}>
+            {activeMedia.type === 'image' ? (
+              <img
+                src={activeMedia.url}
+                alt="Project screenshot"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <project.icon size={80} className="text-white drop-shadow-lg" />
+            )}
           </div>
+          <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+            {galleryItems.map((item, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActiveMedia(item)}
+                className={`relative h-20 aspect-video rounded-xl overflow-hidden shrink-0 border-2 transition-all 
+                ${activeMedia === item ? 'border-slate-900 scale-105 shadow-md' : 'border-transparent hover:border-slate-300'}`}
+              >
+                {item.type === 'video' ? (
+                  <div className="w-full h-full bg-slate-900 flex items-center justify-center text-white">
+                    <Play size={20} fill="currentColor" />
+                  </div>
+                ) : item.type === 'image' ? (
+                  <img src={item.url} className="w-full h-full object-cover" alt="" />
+                ) : (
+                  <div className={`w-full h-full ${project.color} flex items-center justify-center text-white/80`}>
+                    <ImageIcon size={20} />
+                  </div>
+                )}
+                {activeMedia === item && (
+                  <div className="absolute inset-0 bg-slate-900/10 pointer-events-none" />
+                )}
+              </button>
+            ))}
+          </div>
+
         </div>
+
 
         <div className="lg:col-span-5 flex flex-col justify-center">
           <span className="text-xs font-black uppercase tracking-[0.3em] text-[#EF959C] mb-4">Weekend Project</span>
