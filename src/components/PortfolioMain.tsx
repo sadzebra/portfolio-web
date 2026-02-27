@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import BentoBox from './BentoBox';
 import ProjectDetail from './ProjectDetail';
 import ContactForm from './ContactForm';
@@ -14,7 +14,6 @@ import {
   ArrowUpRight,
   Zap,
   Coffee,
-  Edit3,
   Film,
   Trophy,
   Layers,
@@ -26,63 +25,17 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import ModalWindow from './Modal';
+import { PORTFOLIO_DATA } from '../data/portfolioData';
 
 export default function App() {
   const [mounted, setMounted] = useState(false);
   const [activeProject, setActiveProject] = useState(null);
   const [activeStackSlide, setActiveStackSlide] = useState(0);
-  const [isContactOpen, setIsContactOpen] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
 
-  const weekendProjects = [
-    { id: "whiteboard", title: "Collaborative Whiteboard", description: "Real-time shared drawing space using optimistic UI updates and sub-50ms WebSocket broadcast architecture.", icon: Edit3, color: "bg-[#95ADB6]", tags: ["Socket.io", "Canvas API", "React", "Node.js"], live: "#", repo: "https://github.com/sadzebra/collaborative-whiteboard", gallery: [{ type: 'icon', icon: Edit3 }, { type: 'image', url: 'https://placehold.co/139x77' }, { type: 'video', url: '#' }] },
-    { id: "movie-finder", title: "Movie Finder", description: "High-performance discovery engine with real-time search and cinema data visualization.", icon: Film, color: "bg-[#CBB3BF]", tags: ["React", "TMDB API", "Vite", "Tailwind CSS"], live: "#", repo: "https://github.com/sadzebra/movies-finder", gallery: [{ type: 'icon', icon: Edit3 }, { type: 'image', url: 'https://placehold.co/139x77' }, { type: 'video', url: '#' }] },
-    { id: "roaster", title: "Code Roaster", description: "AI-powered feedback engine using Google's Gemini API and custom persona engineering.", icon: Coffee, color: "bg-[#EF959C]", tags: ["Gemini API", "Prompt Engineering", "Express", "Docker"], live: "#", repo: "https://github.com/sadzebra/roasted-code", gallery: [{ type: 'icon', icon: Edit3 }, { type: 'image', url: 'https://placehold.co/139x77' }, { type: 'video', url: '#' }] },
-    { id: "lab-4", title: "System Monitor", description: "Real-time dashboard for cloud infrastructure monitoring and alerting.", icon: Binary, color: "bg-[#8DA1B9]", tags: ["Go", "gRPC", "Prometheus"], live: "#", repo: "#", gallery: [{ type: 'icon', icon: Edit3 }, { type: 'image', url: 'https://placehold.co/139x77' }, { type: 'video', url: '#' }] },
-    { id: "lab-5", title: "Logic Flow", description: "A visual programming environment for automated workflow generation.", icon: Box, color: "bg-[#DBC7BE]", tags: ["React Flow", "Zustand", "Node.js"], live: "#", repo: "#", gallery: [{ type: 'icon', icon: Edit3 }, { type: 'image', url: 'https://placehold.co/139x77' }, { type: 'video', url: '#' }] }
-  ];
-
-  const clientProjects = [
-    {
-      id: "thermoTech",
-      title: "Thermo Tech (Launching March)",
-      description: "Shopify sales website for a startup",
-      icon: Edit3,
-      color: "bg-brand-teal",
-      tags: ["Shopify"],
-      live: "#",
-      repo: "#"
-    },
-    {
-      id: "alongcameloulou",
-      title: "Along Came Lou Lou(Coming soon)",
-      description: "A high-performance discovery engine for cinema. Features advanced filtering, trailer integration, and personal watchlists.",
-      icon: Film,
-      color: "bg-brand-mauve",
-      tags: ["TMDB API", "Tailwind", "React Query"],
-      live: "#",
-      repo: "#"
-    }
-  ];
-
-  const techStacks = [
-    {
-      category: "Frontend",
-      skills: ['TypeScript', 'React / Next.js', 'Tailwind CSS', 'Vue.js', 'Vite', 'Redux']
-    },
-    {
-      category: "Backend",
-      skills: ['Node.js', 'Express.js', 'PostgreSQL', 'DynamoDB', 'SQL', 'Data Modelling']
-    },
-    {
-      category: "DevOps & Tools",
-      skills: ['AWS', 'Docker', 'CI/CD', 'Git', 'Jenkins', 'BitBucket']
-    }
-  ];
-
-  const experienceHistory = [
-    { id: "thermoTech", title: "Performance Engineering", type: "Case Study", description: "Technical migration and storefront overhaul for a high-growth HVAC tech startup.", icon: Zap, color: "bg-[#8DA1B9]", tags: ["Optimization", "React", "Shopify"], live: "#", repo: "#" }
-  ];
+  const weekendProjects = PORTFOLIO_DATA.weekendProjects;
+  const techStacks = PORTFOLIO_DATA.techStacks;
+  const experienceHistory = PORTFOLIO_DATA.careerTimeline;
 
   useEffect(() => {
     setMounted(true);
@@ -114,20 +67,16 @@ export default function App() {
         <div className="absolute -left-[10%] top-[20%] h-[500px] w-[500px] rounded-full bg-brand-slate/10 blur-[120px]" />
         <div className="absolute -right-[10%] top-[10%] h-[500px] w-[500px] rounded-full bg-bran-pink/10 blur-[120px]" />
       </div>
-
       <div className="mx-auto max-w-7xl relative">
         <header className="mb-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            {/* <div className="h-10 w-10 rounded-xl bg-brand-slate shadow-lg shadow-brand-slate/20" /> */}
             <div className="h-10 w-10 rounded-xl bg-[#8DA1B9] shadow-lg shadow-[#8DA1B9]/20 flex items-center justify-center text-white">
               <Terminal size={20} />
             </div>
             <span className="text-2xl font-black tracking-tight text-slate-900">BRIAN HODGE<span className="text-brand-pink">.</span></span>
           </div>
         </header>
-
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 grid-flow-row">
-
           <BentoBox
             bgColor="bg-brand-beige"
             className="col-span-1 row-span-2 sm:col-span-2 md:col-span-2 lg:col-span-3 lg:row-span-2 flex flex-col justify-between border-none"
@@ -190,7 +139,6 @@ export default function App() {
           >
             <Zap size={32} className="mb-4 animate-pulse" />
             <span className="text-4xl font-black text-slate-800">15+</span>
-
             <span className="text-xs font-black uppercase tracking-widest leading-tight">Years Of experiences</span>
             <ArrowUpRight size={14} className="absolute top-6 right-6 opacity-40 group-hover:opacity-100 transition-opacity" />
           </BentoBox>
@@ -258,7 +206,6 @@ export default function App() {
             <ArrowUpRight size={14} className="absolute top-6 right-6 text-white/40 group-hover:text-white transition-colors" />
           </BentoBox>
 
-          {/* Featured Project (Right Position) - Spans 2 rows and 4 columns */}
           <BentoBox
             bgColor={weekendProjects[0].color}
             className="col-span-1 row-span-2 sm:col-span-2 lg:col-span-4 lg:row-span-2 p-0 flex flex-col border-none text-white cursor-pointer"
@@ -280,7 +227,6 @@ export default function App() {
             </div>
           </BentoBox>
 
-          {/* Tile 3 & 4 */}
           <BentoBox
             bgColor={weekendProjects[3].color}
             className="col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-1 border-none flex flex-col items-center justify-center text-center p-8 min-h-[220px]"
@@ -300,19 +246,6 @@ export default function App() {
             <span className="text-[10px] font-black uppercase tracking-widest text-white leading-tight">{weekendProjects[4].title}</span>
             <ArrowUpRight size={14} className="absolute top-6 right-6 text-white/40 group-hover:text-white transition-colors" />
           </BentoBox>
-
-          {/* {weekendProjects.map((project) => ( */}
-          {/*   <BentoBox */}
-          {/*     key={project.id} */}
-          {/*     bgColor={project.color} */}
-          {/*     className="col-span-1 sm:col-span-1 md:col-span-2 lg:col-span-2 border-none flex flex-col items-center justify-center text-center p-8 min-h-[220px]" */}
-          {/*     onClick={() => setActiveProject(project)} */}
-          {/*   > */}
-          {/*     <project.icon size={32} className="text-white mb-4 transition-transform group-hover:scale-125 duration-500" /> */}
-          {/*     <span className="text-xs font-black uppercase tracking-widest text-white leading-tight">{project.title}</span> */}
-          {/*     <ArrowUpRight size={16} className="absolute top-6 right-6 text-white/50 group-hover:text-white transition-colors" /> */}
-          {/*   </BentoBox> */}
-          {/* ))} */}
 
           <div className="col-span-1 sm:col-span-2 lg:col-span-6 flex items-center justify-between px-4 py-8">
             <h2 className="text-sm font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-4">
@@ -344,45 +277,6 @@ export default function App() {
               <li className="flex items-center gap-3"><CheckCircle2 size={16} className="text-[#EF959C]" /> User-centric logic</li>
             </ul>
           </BentoBox>
-
-          {/* <BentoBox */}
-          {/*   bgColor="bg-brand-slate" */}
-          {/*   className="col-span-1 row-span-2 sm:col-span-2 lg:col-span-3 lg:row-span-2 p-0 flex flex-col border-none text-white" */}
-          {/* > */}
-          {/*   <div className="p-8"> */}
-          {/*     <div className="flex items-center justify-between mb-4"> */}
-          {/*       <span className="text-xs font-black uppercase tracking-[0.2em] text-white/70">Selected Project</span> */}
-          {/*       <ExternalLink size={18} className="text-white/70" /> */}
-          {/*     </div> */}
-          {/*     <h4 className="text-3xl font-bold mb-2">My Portfolio Website</h4> */}
-          {/*     <p className="text-white/80 font-medium">About this website.</p> */}
-          {/*   </div> */}
-          {/*   <div className="mt-auto px-8"> */}
-          {/*     <div className="h-48 w-full rounded-t-[2rem] bg-white/20 backdrop-blur-md border-x border-t border-white/30 flex items-center justify-center"> */}
-          {/*       <div className="w-4/5 h-3/4 bg-brand-teal rounded-xl shadow-2xl relative overflow-hidden p-4"> */}
-          {/*         <div className="h-2 w-1/2 bg-white/40 rounded-full mb-2" /> */}
-          {/*         <div className="h-2 w-1/3 bg-white/40 rounded-full mb-4" /> */}
-          {/*         <div className="grid grid-cols-2 gap-2"> */}
-          {/*           <div className="h-12 bg-white/20 rounded-lg" /> */}
-          {/*           <div className="h-12 bg-white/20 rounded-lg" /> */}
-          {/*         </div> */}
-          {/*       </div> */}
-          {/*     </div> */}
-          {/*   </div> */}
-          {/* </BentoBox> */}
-          {/**/}
-          {/* {clientProjects.map((project) => ( */}
-          {/*   <BentoBox */}
-          {/*     key={project.id} */}
-          {/*     bgColor={project.color} */}
-          {/*     className="col-span-1 border-none flex flex-col items-center justify-center text-center p-6 min-h-[180px]" */}
-          {/*     onClick={() => setActiveProject(project)} */}
-          {/*   > */}
-          {/*     <project.icon size={32} className="text-white mb-4 transition-transform group-hover:scale-125 duration-500" /> */}
-          {/*     <span className="text-xs font-black uppercase tracking-widest text-white leading-tight">{project.title}</span> */}
-          {/*     <ArrowUpRight size={16} className="absolute top-6 right-6 text-white/50 group-hover:text-white transition-colors" /> */}
-          {/*   </BentoBox> */}
-          {/* ))} */}
         </div>
 
         <footer className="mt-20 border-t border-black/5 pt-10 flex flex-col md:flex-row items-center justify-between text-[11px] font-bold uppercase tracking-widest text-slate-400">
