@@ -33,7 +33,7 @@ export const PORTFOLIO_DATA = {
     },
     {
       category: "DevOps & Tools",
-      skills: ['AWS', 'Docker', 'CI/CD', 'Git', 'BitBucket']
+      skills: ['AWS', 'Docker', 'CI/CD', 'Git', 'BitBucket', 'Docker']
     }
   ],
 
@@ -92,10 +92,11 @@ export const PORTFOLIO_DATA = {
     {
       id: "portfolio",
       title: "Personal Portfolio Website",
-      description: "My Portfolio.",
+      description: "The Bento Portfolio was engineered as a high-performance personal ecosystem designed to bridge the gap between static CVs and live technical demonstration. \n\nPurpose & Strategy\nCreated with the intent of showcasing architectural modularity, the project moves away from standard templates to implement a custom-built 'shell and content' architecture. The primary goal was to provide a frictionless browsing experience that highlights 15+ years of full-stack expertise through visual storytelling.\n\nExecution & Tooling\nBuilt using React and Tailwind CSS, the application leverages a centralized configuration layer to decouple data from UI. This enables rapid content scaling while maintaining a strict design system. Key technical highlights include a hybrid carousel for tech-stack visualization and a scroll-locked, unified modal management system.\n\nConstruction & Integration\nThe site functions as a hub, dynamically pulling in diverse project types—from WebSocket-driven labs to professional case studies. By implementing a dynamic media gallery that supports Loom embeds alongside static assets, the portfolio provides a comprehensive view of my development process, resulting in a cohesive digital identity.",
+      shortDescription: "A Case Study in technical identity and modular web architecture.",
       icon: Edit3,
       color: "bg-[#95ADB6]",
-      tags: ["React", "Node.js"],
+      tags: ["React", "Tailwind CSS", "Node", "NextJS", "Lucide", "Framer Motion"],
       live: "#",
       repo: "https://github.com/sadzebra/portfolio-web",
       gallery: [

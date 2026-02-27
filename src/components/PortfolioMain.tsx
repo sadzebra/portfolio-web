@@ -214,7 +214,7 @@ export default function App() {
             <div className="p-10">
               <div className="flex items-center justify-between mb-4"><span className="text-xs font-black uppercase tracking-[0.2em] text-white/60">Featured Lab</span><ExternalLink size={20} className="text-white/60" /></div>
               <h4 className="text-4xl font-black mb-4 tracking-tighter leading-none">{PORTFOLIO_DATA.weekendProjects[0].title}</h4>
-              <p className="text-white/80 text-lg font-medium max-w-sm">{PORTFOLIO_DATA.weekendProjects[0].description}</p>
+              <p className="text-white/80 text-lg font-medium max-w-sm">{PORTFOLIO_DATA.weekendProjects[0].shortDescription}</p>
             </div>
 
             {/* META MOCKUP: Portfolio-style branding blocks */}
