@@ -25,7 +25,7 @@ export const PORTFOLIO_DATA = {
   techStacks: [
     {
       category: "Frontend",
-      skills: ['TypeScript', 'React / Next.js', 'Tailwind CSS', 'Vue.js', 'Vite', 'Redux']
+      skills: ['TypeScript', 'React', 'Next.js', 'Tailwind CSS', 'Vue.js', 'Vite']
     },
     {
       category: "Backend",
@@ -33,7 +33,7 @@ export const PORTFOLIO_DATA = {
     },
     {
       category: "DevOps & Tools",
-      skills: ['AWS', 'Docker', 'CI/CD', 'Git', 'Jenkins', 'BitBucket']
+      skills: ['AWS', 'Docker', 'CI/CD', 'Git', 'BitBucket']
     }
   ],
 
