@@ -11,6 +11,18 @@ import {
 const ProjectDetail = ({ project, onBack }) => {
   const galleryItems = project.gallery || [{ type: 'icon', icon: project.icon }];
   const [activeMedia, setActiveMedia] = useState(galleryItems[0]);
+
+  const getAssetUrl = (fileName) => {
+    if (!fileName)
+      return '';
+    if (fileName.startsWith('http'))
+      return fileName;
+
+    console.log(`constructed file location: ${window.location.origin}/assets/images/${fileName}`)
+
+    return `${window.location.origin}/assets/images/${fileName}`;
+  };
+
   return (
     <div className="min-h-screen bg-[#F9F6F4] p-4 md:p-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <button
@@ -26,7 +38,7 @@ const ProjectDetail = ({ project, onBack }) => {
           <div className={`aspect-video w-full rounded-[3rem] ${project.color} flex items-center justify-center p-12 shadow-2xl mb-4`}>
             {activeMedia.type === 'image' ? (
               <img
-                src={activeMedia.url}
+                src={getAssetUrl(activeMedia.url)}
                 alt="Project screenshot"
                 className="w-full h-full object-cover"
               />
@@ -47,7 +59,7 @@ const ProjectDetail = ({ project, onBack }) => {
                     <Play size={20} fill="currentColor" />
                   </div>
                 ) : item.type === 'image' ? (
-                  <img src={item.url} className="w-full h-full object-cover" alt="" />
+                  <img src={getAssetUrl(item.url)} className="w-full h-full object-cover" alt="" />
                 ) : (
                   <div className={`w-full h-full ${project.color} flex items-center justify-center text-white/80`}>
                     <ImageIcon size={20} />
