@@ -90,6 +90,23 @@ export const PORTFOLIO_DATA = {
 
   weekendProjects: [
     {
+      id: "portfolio",
+      title: "Personal Portfolio Website",
+      description: "My Portfolio.",
+      icon: Edit3,
+      color: "bg-[#95ADB6]",
+      tags: ["React", "Node.js"],
+      live: "#",
+      repo: "https://github.com/sadzebra/portfolio-web",
+      gallery: [
+        { type: 'image', url: 'portfolio-main.png' },
+        { type: 'image', url: 'portfolio-lets-talk.png' },
+        { type: 'image', url: 'portfolio-work-history.png' },
+        // { type: 'icon', icon: Edit3 },
+        // { type: 'video', url: 'https://www.loom.com/embed/d32f7a012e104e9c8e2786720f787b8f' }
+      ]
+    },
+    {
       id: "whiteboard",
       title: "Collaborative Whiteboard",
       description: "Real-time shared drawing space using optimistic UI updates and sub-50ms WebSocket broadcast architecture.",
@@ -99,11 +116,14 @@ export const PORTFOLIO_DATA = {
       live: "#",
       repo: "https://github.com/sadzebra/collaborative-whiteboard",
       gallery: [
-        { type: 'icon', icon: Edit3 },
-        { type: 'image', url: 'https://images.unsplash.com/photo-1611224885990-bb7373c2f281?auto=format&fit=crop&q=80&w=800' },
-        { type: 'video', url: 'https://www.loom.com/embed/d32f7a012e104e9c8e2786720f787b8f' }
+        { type: 'image', url: 'portfolio-main.png' },
+        // { type: 'image', url: 'portfolio-lets-talk.png' },
+        // { type: 'image', url: 'portfolio-work-history.png' },
+        // { type: 'icon', icon: Edit3 },
+        // { type: 'video', url: 'https://www.loom.com/embed/d32f7a012e104e9c8e2786720f787b8f' }
       ]
     },
+
     {
       id: "movie-finder",
       title: "Movie Finder",
@@ -126,24 +146,14 @@ export const PORTFOLIO_DATA = {
     },
     {
       id: "lab-4",
-      title: "System Monitor",
-      description: "Real-time dashboard for cloud infrastructure monitoring and automated alerting.",
+      title: "Coming soon",
+      description: "Coming soon.",
       icon: Binary,
       color: "bg-[#8DA1B9]",
-      tags: ["Go", "gRPC", "Prometheus"],
+      tags: [""],
       live: "#",
       repo: "#"
     },
-    {
-      id: "lab-5",
-      title: "Logic Flow",
-      description: "A visual programming environment for automated workflow generation.",
-      icon: Box,
-      color: "bg-[#DBC7BE]",
-      tags: ["React Flow", "Zustand", "Node.js"],
-      live: "#",
-      repo: "#"
-    }
   ],
 
   caseStudies: [
