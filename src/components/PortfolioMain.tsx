@@ -212,17 +212,25 @@ export default function App() {
             onClick={() => setActiveProject(weekendProjects[0])}
           >
             <div className="p-10">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-black uppercase tracking-[0.2em] text-white/60">Featured Lab</span>
-                <ArrowUpRight size={20} className="text-white/60" />
-              </div>
-              <h4 className="text-4xl font-black mb-4 tracking-tighter leading-none">{weekendProjects[0].title}</h4>
-              <p className="text-white/80 text-lg font-medium max-w-sm">{weekendProjects[0].description}</p>
+              <div className="flex items-center justify-between mb-4"><span className="text-xs font-black uppercase tracking-[0.2em] text-white/60">Featured Lab</span><ExternalLink size={20} className="text-white/60" /></div>
+              <h4 className="text-4xl font-black mb-4 tracking-tighter leading-none">{PORTFOLIO_DATA.weekendProjects[0].title}</h4>
+              <p className="text-white/80 text-lg font-medium max-w-sm">{PORTFOLIO_DATA.weekendProjects[0].description}</p>
             </div>
+
+            {/* META MOCKUP: Portfolio-style branding blocks */}
             <div className="mt-auto px-10">
-              <div className="h-56 w-full rounded-t-[3rem] bg-white/20 backdrop-blur-md border-x border-t border-white/30 p-8 flex flex-col justify-end">
-                <div className="h-3 w-1/2 bg-white/40 rounded-full mb-3" />
-                <div className="h-3 w-1/3 bg-white/40 rounded-full" />
+              <div className="h-56 w-full rounded-t-[3rem] bg-white/10 backdrop-blur-md border-x border-t border-white/20 p-6 flex flex-col gap-3">
+                <div className="flex gap-3 h-1/2">
+                  <div className="w-2/3 bg-[#DBC7BE]/30 rounded-2xl border border-white/10" />
+                  <div className="w-1/3 flex flex-col gap-3">
+                    <div className="h-full bg-[#95ADB6]/30 rounded-xl border border-white/10" />
+                    <div className="h-full bg-[#EF959C]/30 rounded-xl border border-white/10" />
+                  </div>
+                </div>
+                <div className="flex gap-3 h-1/2">
+                  <div className="w-1/3 bg-[#8DA1B9]/30 rounded-xl border border-white/10" />
+                  <div className="w-2/3 bg-white/10 rounded-2xl border border-white/10" />
+                </div>
               </div>
             </div>
           </BentoBox>
