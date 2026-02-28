@@ -6,7 +6,9 @@ import {
   Box,
   Zap,
   Layers,
-  Cpu
+  Cpu,
+  TrendingUp,
+  ShieldCheck
 } from 'lucide-react';
 
 export const PORTFOLIO_DATA = {
@@ -207,6 +209,29 @@ export const PORTFOLIO_DATA = {
       subtitle: "Secure Expert Consultancy",
       buttonText: "Secure My Time",
       bgColor: "bg-slate-900"
+    }
+  ],
+  strategicValue: [
+    {
+      title: "Marketplace Independence",
+      description: "Reducing reliance on third-party platforms (Vinted/eBay) by engineering custom, high-converting home-base storefronts.",
+      icon: ShieldCheck,
+      color: "text-[#EF959C]",
+      bg: "bg-[#EF959C]/5"
+    },
+    {
+      title: "Technical SEO & Scale",
+      description: "Implementing advanced schema markups and optimized asset pipelines to drive organic discovery and scale sales volume.",
+      icon: TrendingUp,
+      color: "text-[#8DA1B9]",
+      bg: "bg-[#8DA1B9]/5"
+    },
+    {
+      title: "Architecture Modernization",
+      description: "Legacy system migrations into headless, decoupled environments to eliminate performance bottlenecks and technical debt.",
+      icon: Cpu,
+      color: "text-[#95ADB6]",
+      bg: "bg-[#95ADB6]/5"
     }
   ]
 
