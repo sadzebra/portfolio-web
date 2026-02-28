@@ -22,7 +22,8 @@ import {
   Code2,
   Binary,
   Box,
-  CheckCircle2
+  CheckCircle2,
+  Rocket
 } from 'lucide-react';
 import ModalWindow from './Modal';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
@@ -36,6 +37,7 @@ export default function App() {
   const weekendProjects = PORTFOLIO_DATA.weekendProjects;
   const techStacks = PORTFOLIO_DATA.techStacks;
   const experienceHistory = PORTFOLIO_DATA.careerTimeline;
+  const callToAction = PORTFOLIO_DATA.callToActions;
 
   useEffect(() => {
     setMounted(true);
@@ -255,6 +257,19 @@ export default function App() {
             <ArrowUpRight size={14} className="absolute top-6 right-6 text-white/40 group-hover:text-white transition-colors" />
           </BentoBox>
 
+          <BentoBox bgColor={callToAction[0].bgColor} className="col-span-1 sm:col-span-2 lg:col-span-6 border-none text-white flex flex-col md:flex-row items-center justify-between gap-8 p-12 my-4">
+            <div className="flex-1 text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
+                <span className="flex h-3 w-3 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-xs font-black uppercase tracking-[0.2em] text-white/60">{callToAction[0].subtitle}</span>
+              </div>
+              <h3 className="text-3xl font-black tracking-tighter">{callToAction[0].title}</h3>
+            </div>
+            <button onClick={() => setActiveModal('contact')} className="group whitespace-nowrap rounded-2xl bg-white px-8 py-5 font-black text-slate-900 transition-all hover:bg-slate-900 hover:text-white hover:shadow-2xl active:scale-95 flex items-center gap-3">
+              {callToAction[0].buttonText} <Rocket size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            </button>
+          </BentoBox>
+
           <div className="col-span-1 sm:col-span-2 lg:col-span-6 flex items-center justify-between px-4 py-8">
             <h2 className="text-sm font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-4">
               <span className="h-2 w-2 rounded-full bg-[#8DA1B9]" /> Client Projects
@@ -269,7 +284,10 @@ export default function App() {
               <p className="text-white/80 text-lg font-medium max-w-sm">Driving conversion and performance through a full headless migration and custom system architecture.</p>
             </div>
             <div className="mt-auto px-10">
-              <div className="h-56 w-full rounded-t-[3rem] bg-white/20 backdrop-blur-md border-x border-t border-white/30 p-8 flex flex-col justify-end"><div className="h-3 w-1/2 bg-white/40 rounded-full mb-3" /><div className="h-3 w-1/3 bg-white/40 rounded-full" /></div>
+              <div className="h-56 w-full rounded-t-[3rem] bg-white/20 backdrop-blur-md border-x border-t border-white/30 p-8 flex flex-col justify-end">
+                <div className="h-3 w-1/2 bg-white/40 rounded-full mb-3" />
+                <div className="h-3 w-1/3 bg-white/40 rounded-full" />
+              </div>
             </div>
           </BentoBox>
 
@@ -285,6 +303,20 @@ export default function App() {
               <li className="flex items-center gap-3"><CheckCircle2 size={16} className="text-[#EF959C]" /> User-centric logic</li>
             </ul>
           </BentoBox>
+
+          <BentoBox bgColor={callToAction[1].bgColor} className="col-span-1 sm:col-span-2 lg:col-span-6 border-none text-white flex flex-col md:flex-row items-center justify-between gap-8 p-12 my-4">
+            <div className="flex-1 text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
+                <span className="flex h-3 w-3 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-xs font-black uppercase tracking-[0.2em] text-white/60">{callToAction[1].subtitle}</span>
+              </div>
+              <h3 className="text-3xl font-black tracking-tighter">{callToAction[1].title}</h3>
+            </div>
+            <button onClick={() => setActiveModal('contact')} className="group whitespace-nowrap rounded-2xl bg-white px-8 py-5 font-black text-slate-900 transition-all hover:bg-[#EF959C] hover:text-white hover:shadow-2xl active:scale-95 flex items-center gap-3">
+              {callToAction[1].buttonText} <Rocket size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            </button>
+          </BentoBox>
+
         </div>
 
         <footer className="mt-20 border-t border-black/5 pt-10 flex flex-col md:flex-row items-center justify-between text-[11px] font-bold uppercase tracking-widest text-slate-400">
@@ -301,6 +333,6 @@ export default function App() {
         {activeModal === 'contact' && <ContactForm onSuccess={() => setActiveModal(null)} />}
         {activeModal === 'history' && <WorkHistory />}
       </ModalWindow>
-    </div>
+    </div >
   );
 }

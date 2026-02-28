@@ -193,7 +193,23 @@ export const PORTFOLIO_DATA = {
       accent: "text-[#95ADB6]",
       bg: "bg-[#95ADB6]/10"
     }
+  ],
+
+  callToActions: [
+    {
+      title: "Looking for a Senior hand to lead your next build?",
+      subtitle: "Hire a Specialist Engineer",
+      buttonText: "Check My Availability",
+      bgColor: "bg-[#EF959C]"
+    },
+    {
+      title: "Ready to transform your technical architecture?",
+      subtitle: "Secure Expert Consultancy",
+      buttonText: "Secure My Time",
+      bgColor: "bg-slate-900"
+    }
   ]
+
   // const clientProjects = [
   //   {
   //     id: "thermoTech",
