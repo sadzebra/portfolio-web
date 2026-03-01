@@ -305,6 +305,10 @@ export default function App() {
             </ul>
           </BentoBox>
 
+          <div className="col-span-1 sm:col-span-2 lg:col-span-6 mt-12 mb-8">
+            <h2 className="text-sm font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-4"><span className="h-2 w-2 rounded-full bg-slate-800" /> Strategic Technical Impact</h2>
+          </div>
+
           {strategicValue?.map((item, idx) => {
             const StrategicIcon = item.icon;
             return (
