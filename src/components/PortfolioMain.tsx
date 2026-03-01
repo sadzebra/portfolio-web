@@ -23,7 +23,7 @@ import {
   Binary,
   Box,
   CheckCircle2,
-  Rocket
+  Rocket,
 } from 'lucide-react';
 import ModalWindow from './Modal';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
@@ -38,6 +38,7 @@ export default function App() {
   const techStacks = PORTFOLIO_DATA.techStacks;
   const experienceHistory = PORTFOLIO_DATA.careerTimeline;
   const callToAction = PORTFOLIO_DATA.callToActions;
+  const strategicValue = PORTFOLIO_DATA.strategicValue;
 
   useEffect(() => {
     setMounted(true);
@@ -303,6 +304,22 @@ export default function App() {
               <li className="flex items-center gap-3"><CheckCircle2 size={16} className="text-[#EF959C]" /> User-centric logic</li>
             </ul>
           </BentoBox>
+
+          {strategicValue?.map((item, idx) => {
+            const StrategicIcon = item.icon;
+            return (
+              <BentoBox key={idx} className="col-span-1 sm:col-span-2 lg:col-span-2 border-none bg-white">
+                <div className="flex gap-6 items-center">
+                  <div className={`h-14 w-14 rounded-[1.25rem] ${item.bg} ${item.color} flex items-center justify-center shrink-0`}>
+                    {StrategicIcon && <StrategicIcon size={28} />}
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-xl font-black text-slate-900 leading-tight mb-2">{item.title}</h4>
+                    <p className="text-sm text-slate-500 font-medium leading-relaxed">{item.description}</p>
+                  </div>
+                </div>
+              </BentoBox>);
+          })}
 
           <BentoBox bgColor={callToAction[1].bgColor} className="col-span-1 sm:col-span-2 lg:col-span-6 border-none text-white flex flex-col md:flex-row items-center justify-between gap-8 p-12 my-4">
             <div className="flex-1 text-center md:text-left">
