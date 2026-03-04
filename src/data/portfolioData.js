@@ -286,6 +286,11 @@ export const PORTFOLIO_DATA = {
       color: "text-[#95ADB6]",
       bg: "bg-[#95ADB6]/5"
     }
+  ],
+
+  journalPosts: [
+    { id: "headless", title: "The Case for Headless E-commerce in 2024", date: "Feb 12", readTime: "6 min", category: "Architecture", excerpt: "Decoupling is no longer a luxury, but a necessity for enterprise scaling." },
+    { id: "seo", title: "Technical SEO for High-Res Catalogs", date: "Jan 28", readTime: "4 min", category: "Growth", excerpt: "Optimizing media-heavy vintage storefronts for organic discovery." }
   ]
 
   // const clientProjects = [

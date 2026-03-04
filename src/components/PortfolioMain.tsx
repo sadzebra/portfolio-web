@@ -12,6 +12,7 @@ import {
   Terminal,
   Sparkles,
   ArrowUpRight,
+  ArrowRight,
   Zap,
   Coffee,
   Film,
@@ -23,17 +24,54 @@ import {
   Binary,
   Box,
   Rocket,
-  ShoppingBag,
+  BookOpen,
+  Calendar,
   Globe
 } from 'lucide-react';
 import ModalWindow from './Modal';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
+
+const BlogContent = ({ post }) => (
+  <div className="pt-2 space-y-4">
+    <div className="text-xs text-[#95ADB6] font-black uppercase tracking-widest">{post.category}</div>
+    <p className="text-lg text-slate-700 font-medium leading-relaxed whitespace-pre-line">{post.excerpt}</p>
+    <div className="h-px bg-slate-100 my-4" />
+    <p className="text-sm text-slate-500 font-medium">This is a summary of the technical deep-dive. The full article explores the architectural implications and performance metrics in detail.</p>
+  </div>
+);
+
+const JournalArchive = ({ posts, onSelect }) => (
+  <div className="space-y-4 pt-2">
+    {posts?.map((post) => (
+      <div
+        key={post.id}
+        onClick={() => onSelect(post)}
+        className="group flex flex-col md:flex-row md:items-center justify-between p-5 rounded-2xl bg-slate-50 hover:bg-white hover:shadow-lg transition-all cursor-pointer border border-transparent hover:border-black/5"
+      >
+        <div className="flex-1">
+          <div className="flex items-center gap-3 mb-1">
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{post.category}</span>
+            <span className="h-1 w-1 rounded-full bg-slate-200" />
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{post.date}</span>
+          </div>
+          <h4 className="text-lg font-black text-slate-900 group-hover:text-[#95ADB6] transition-colors">{post.title}</h4>
+        </div>
+        <div className="flex items-center gap-4 mt-3 md:mt-0">
+          <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center text-slate-400 shadow-sm transition-transform group-hover:translate-x-1">
+            <ArrowRight size={16} />
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+);
 
 export default function App() {
   const [mounted, setMounted] = useState(false);
   const [activeProject, setActiveProject] = useState(null);
   const [activeStackSlide, setActiveStackSlide] = useState(0);
   const [activeModal, setActiveModal] = useState(null);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   const weekendProjects = PORTFOLIO_DATA.weekendProjects;
   const techStacks = PORTFOLIO_DATA.techStacks;
@@ -67,6 +105,12 @@ export default function App() {
   if (activeProject) {
     return <ProjectDetail project={activeProject} onBack={() => setActiveProject(null)} />;
   }
+
+  const openArchiveModal = () => {
+    setActiveModal('archive');
+  };
+
+
 
   // Palette Mapping:
   // #8DA1B9 - brand-slate
@@ -371,6 +415,38 @@ export default function App() {
             </BentoBox>
           )}
 
+          <div className="col-span-1 sm:col-span-2 lg:col-span-6 flex items-center justify-between px-2 py-3 mt-1">
+            <h2 className="text-sm font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-4">
+              <span className="h-2 w-2 rounded-full bg-[#95ADB6]" /> Technical Journal
+            </h2>
+            <span className="h-px flex-1 bg-black/5 mx-6"></span>
+          </div>
+
+          {PORTFOLIO_DATA.journalPosts?.slice(0, 2).map((post) => (
+            <BentoBox key={post.id} className="col-span-1 sm:col-span-2 lg:col-span-2 border-none bg-white flex flex-col justify-between group" onClick={() => { setSelectedPost(post); setActiveModal('blog'); }}>
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="h-8 w-8 rounded-lg bg-slate-50 text-slate-400 flex items-center justify-center ring-1 ring-black/5"><BookOpen size={16} /></div>
+                  <span className="text-[9px] font-black uppercase tracking-widest text-slate-400">{post.category}</span>
+                </div>
+                <h4 className="text-lg font-black text-slate-900 leading-tight mb-2 group-hover:text-[#95ADB6] transition-colors">{post.title}</h4>
+                <p className="text-xs text-slate-500 font-medium line-clamp-2 leading-relaxed">{post.excerpt}</p>
+              </div>
+              <div className="flex items-center justify-between mt-5 pt-4 border-t border-slate-50">
+                <div className="flex items-center gap-3 text-[9px] font-black uppercase tracking-widest text-slate-300">
+                  <span className="flex items-center gap-1"><Calendar size={10} /> {post.date}</span>
+                </div>
+                <div className="h-7 w-7 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-[#95ADB6] group-hover:text-white transition-all"><ArrowUpRight size={14} /></div>
+              </div>
+            </BentoBox>
+          ))}
+
+          <BentoBox bgColor="bg-[#95ADB6]" className="col-span-1 sm:col-span-2 lg:col-span-2 border-none text-white flex flex-col justify-center items-center text-center p-8 min-h-[160px] group" onClick={() => openArchiveModal()}>
+            <div className="h-10 w-10 rounded-xl bg-white/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"><BookOpen size={20} /></div>
+            <h4 className="text-lg font-black tracking-tighter leading-none mb-1.5">Journal Archive</h4>
+            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] group-hover:gap-3 transition-all">Browse all <ArrowRight size={12} /></div>
+          </BentoBox>
+
           <div className="col-span-1 sm:col-span-2 lg:col-span-6 mt-12 mb-8">
             <h2 className="text-sm font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-4"><span className="h-2 w-2 rounded-full bg-slate-800" /> Strategic Technical Impact</h2>
           </div>
@@ -412,13 +488,59 @@ export default function App() {
       </div>
       <ModalWindow
         isOpen={activeModal !== null}
-        onClose={() => setActiveModal(null)}
-        title={activeModal === 'contact' ? "Let's build something great." : "Career Timeline"}
-        subtitle={activeModal === 'contact' ? "Tell me about your project or opportunity." : "15+ years of engineering impact."}
-        maxWidth={activeModal === 'history' ? "max-w-4xl" : "max-w-lg"}
+        onClose={() => { setActiveModal(null); setActiveProject(null); setSelectedPost(null); }}
+        title={
+          activeModal === 'contact' ? "Let's build something great." :
+            activeModal === 'history' ? "Career Timeline" :
+              activeModal === 'blog' ? selectedPost?.title :
+                activeModal === 'archive' ? "Technical Journal Archive" :
+                  activeProject?.title
+        }
+        subtitle={
+          activeModal === 'contact' ? "Tell me about your project or opportunity." :
+            activeModal === 'history' ? "15+ Years Experience" :
+              activeModal === 'blog' ? "Deep Dive" :
+                activeModal === 'archive' ? "Explore full entries" :
+                  activeProject?.type
+        }
+        maxWidth={activeModal === 'history' || activeModal === 'archive' ? "max-w-4xl" : "max-w-lg"}
       >
         {activeModal === 'contact' && <ContactForm onSuccess={() => setActiveModal(null)} />}
-        {activeModal === 'history' && <WorkHistory />}
+        {activeModal === 'history' && (
+          <div className="pt-2 space-y-4">
+            {PORTFOLIO_DATA.careerTimeline.map((job, i) => (
+              <div key={i} className="p-4 bg-slate-50 rounded-2xl border border-black/5">
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <h4 className="font-black text-slate-900">{job.company}</h4>
+                    <p className="text-xs font-bold text-slate-400">{job.role}</p>
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{job.period}</span>
+                </div>
+                <ul className="space-y-1.5">
+                  {job.details.map((d, di) => (
+                    <li key={di} className="text-xs text-slate-600 font-medium">• {d}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        )}
+        {activeModal === 'project' && activeProject && (
+          <div className="pt-2 space-y-5">
+            <div className={`aspect-video rounded-3xl ${activeProject.color} flex items-center justify-center text-white`}>
+              {(() => {
+                const ProjectIcon = activeProject.icon;
+                return <ProjectIcon size={48} />;
+              })()}
+            </div>
+            <p className="text-base text-slate-600 font-medium leading-relaxed whitespace-pre-line">{activeProject.description}</p>
+          </div>
+        )}
+        {activeModal === 'blog' && selectedPost && (
+          <BlogContent post={selectedPost} />
+        )}
+        {activeModal === 'archive' && <JournalArchive posts={PORTFOLIO_DATA.journalPosts} onSelect={(post) => { setSelectedPost(post); setActiveModal('blog'); }} />}
       </ModalWindow>
     </div >
   );
