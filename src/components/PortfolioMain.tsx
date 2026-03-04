@@ -121,7 +121,7 @@ export default function App() {
               <div className="flex gap-2">
                 <a href="https://github.com/sadzebra" target="_blank" className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm hover:shadow-md transition-all"><GitMerge size={20} /></a>
                 <a href="https://www.linkedin.com/in/brian-hodge-bh/" target="_blank" className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm hover:shadow-md transition-all"><Linkedin size={20} /></a>
-                <a href="#" download className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm hover:shadow-md transition-all hover:-translate-y-1 text-slate-700" title="Download CV">
+                <a href="downloads/brianHodgeCV.pdf" download className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm hover:shadow-md transition-all hover:-translate-y-1 text-slate-700" title="Download CV">
                   <FileDown size={20} />
                 </a>
               </div>
