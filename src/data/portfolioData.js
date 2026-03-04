@@ -3,12 +3,13 @@ import {
   Film,
   Coffee,
   Binary,
-  Box,
   Zap,
   Layers,
   Cpu,
   TrendingUp,
-  ShieldCheck
+  ShieldCheck,
+  ShoppingBag,
+  Globe
 } from 'lucide-react';
 
 export const PORTFOLIO_DATA = {
@@ -21,7 +22,11 @@ export const PORTFOLIO_DATA = {
     description: "Senior Full-Stack Engineer with 15+ years of experience deconstructing complex requirements into performant, maintainable digital ecosystems.",
     email: "brian.hodgebh@gmail.com",
     github: "https://github.com/sadzebra",
-    linkedin: "https://www.linkedin.com/in/brian-hodge-bh/"
+    linkedin: "https://www.linkedin.com/in/brian-hodge-bh/",
+    seo: {
+      title: "Brian Hodge | Senior Full-Stack Engineer & Product Architect",
+      description: "Senior Full-Stack Engineer with 15+ years experience building high-performance digital ecosystems, headless e-commerce, and scalable technical architectures."
+    }
   },
 
   techStacks: [
@@ -126,7 +131,6 @@ export const PORTFOLIO_DATA = {
         // { type: 'video', url: 'https://www.loom.com/embed/d32f7a012e104e9c8e2786720f787b8f' }
       ]
     },
-
     {
       id: "movie-finder",
       title: "Movie Finder",
@@ -159,19 +163,31 @@ export const PORTFOLIO_DATA = {
     },
   ],
 
+
   caseStudies: [
     {
       id: "thermoTech",
-      title: "Performance Engineering",
-      type: "Case Study",
-      description: "Architected a full headless migration for an HVAC leader, reducing LCP by 60% and implementing a custom Shopify component library.",
-      icon: Zap,
-      color: "bg-[#8DA1B9]",
-      tags: ["Optimization", "React", "Shopify"],
-      live: "#",
-      repo: "#"
+      title: "Thermo Tech",
+      type: "Headless E-commerce",
+      description: "Architected a full headless migration for a scaling HVAC industry leader. \n\nThe Challenge\nThe existing legacy system suffered from significant performance bottlenecks and a rigid frontend that limited conversion growth. \n\nThe Solution\nSpearheaded a migration to a modern tech stack, decoupling the storefront from the backend logic. This allowed for sub-second page loads and a completely custom user journey tailored to technical HVAC buyers.\n\nKey Impact\n• Reduced Largest Contentful Paint (LCP) by over 60%.\n• Developed a custom Shopify-integrated component library.\n• Implemented an automated build pipeline for rapid feature deployment.",
+      icon: Zap, color: "bg-[#8DA1B9]", tags: ["Optimization", "React", "Shopify", "Performance"], live: "#", repo: "#", gallery: [{ type: 'icon', icon: Zap }, { type: 'image', url: 'thermotech-migration.png' }]
+    },
+    {
+      id: "alongCameLoulou",
+      title: "Along Came Loulou",
+      type: "E-commerce & SEO Strategy",
+      description: "Engineered a centralized digital hub for a bespoke vintage clothing seller to establish brand independence and scale organic reach.\n\nThe Mission\nThe business was heavily reliant on third-party marketplaces (Vinted), resulting in high commission losses and limited brand control. The goal was to build a 'home base' for the business.\n\nThe Construction\nUtilizing a tailored WordPress and WooCommerce architecture, I implemented an optimized user experience using Blocksy and Elementor. The backend was fortified with MailPoet for automated CRM and WP Forms for custom client inquiries. \n\nGrowth Engine\nBeyond the build, I executed a technical SEO roadmap aimed at expanding the brand's reach. This included schema markup for clothing products and high-performance image optimization to ensure the high-resolution vintage catalogs remained performant on mobile devices.",
+      icon: ShoppingBag, color: "bg-[#EF959C]", tags: ["WooCommerce", "WordPress", "SEO", "Client Hub"], live: "https://alongcameloulou.com/", repo: "#", gallery: [{ type: 'icon', icon: ShoppingBag }, { type: 'image', url: 'loulou-preview.png' }]
+    },
+    {
+      id: "freelanceSite",
+      title: "Freelance Hub",
+      type: "Personal Brand Ecosystem",
+      description: "A specialized platform designed to showcase full-stack capabilities and facilitate client onboarding for independent consultancy. Focuses on minimal bloat and high-conversion UX.",
+      icon: Globe, color: "bg-[#DBC7BE]", tags: ["React", "Personal Brand", "Consultancy"], live: "#", repo: "#"
     }
   ],
+
 
   valueTiles: [
     {

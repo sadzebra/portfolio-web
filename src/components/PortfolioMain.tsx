@@ -22,8 +22,9 @@ import {
   Code2,
   Binary,
   Box,
-  CheckCircle2,
   Rocket,
+  ShoppingBag,
+  Globe
 } from 'lucide-react';
 import ModalWindow from './Modal';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
@@ -39,6 +40,16 @@ export default function App() {
   const experienceHistory = PORTFOLIO_DATA.careerTimeline;
   const callToAction = PORTFOLIO_DATA.callToActions;
   const strategicValue = PORTFOLIO_DATA.strategicValue;
+
+  useEffect(() => {
+    if (PORTFOLIO_DATA.profile.seo) {
+      document.title = PORTFOLIO_DATA.profile.seo.title;
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (metaDescription) {
+        metaDescription.setAttribute('content', PORTFOLIO_DATA.profile.seo.description);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -278,32 +289,44 @@ export default function App() {
             <span className="h-px flex-1 bg-black/5 mx-6"></span>
           </div>
 
-          <BentoBox bgColor="bg-[#8DA1B9]" className="col-span-1 row-span-2 sm:col-span-2 lg:col-span-4 lg:row-span-2 p-0 flex flex-col border-none text-white cursor-pointer" onClick={() => setActiveProject(experienceHistory[0])}>
-            <div className="p-10">
-              <div className="flex items-center justify-between mb-4"><span className="text-xs font-black uppercase tracking-[0.2em] text-white/60">Featured Experience</span><ExternalLink size={20} className="text-white/60" /></div>
-              <h4 className="text-4xl font-black mb-4 tracking-tighter leading-none">Thermo Tech Transformation</h4>
-              <p className="text-white/80 text-lg font-medium max-w-sm">Driving conversion and performance through a full headless migration and custom system architecture.</p>
-            </div>
-            <div className="mt-auto px-10">
-              <div className="h-56 w-full rounded-t-[3rem] bg-white/20 backdrop-blur-md border-x border-t border-white/30 p-8 flex flex-col justify-end">
-                <div className="h-3 w-1/2 bg-white/40 rounded-full mb-3" />
-                <div className="h-3 w-1/3 bg-white/40 rounded-full" />
+          {PORTFOLIO_DATA.caseStudies?.[0] && (
+            <BentoBox bgColor="bg-[#8DA1B9]" className="col-span-1 row-span-2 sm:col-span-2 lg:col-span-4 lg:row-span-2 p-0 flex flex-col border-none text-white cursor-pointer" onClick={() => openProjectModal(PORTFOLIO_DATA.caseStudies[0])}>
+              <div className="p-10">
+                <div className="flex items-center justify-between mb-4"><span className="text-xs font-black uppercase tracking-[0.2em] text-white/60">Featured Experience</span><ExternalLink size={20} className="text-white/60" /></div>
+                <h4 className="text-4xl font-black mb-4 tracking-tighter leading-none">{PORTFOLIO_DATA.caseStudies[0].title}</h4>
+                <p className="text-white/80 text-lg font-medium max-w-sm">Driving conversion through headless architecture and custom migration.</p>
               </div>
-            </div>
-          </BentoBox>
+              <div className="mt-auto px-10"><div className="h-56 w-full rounded-t-[3rem] bg-white/20 backdrop-blur-md border-x border-t border-white/30 p-8 flex flex-col justify-end"><div className="h-3 w-1/2 bg-white/40 rounded-full mb-3" /><div className="h-3 w-1/3 bg-white/40 rounded-full" /></div></div>
+            </BentoBox>
+          )}
 
-          <BentoBox bgColor="bg-[#DBC7BE]" className="col-span-1 sm:col-span-2 lg:col-span-2 border-none flex flex-col justify-center">
-            <span className="text-5xl font-black text-slate-900 leading-none">60%</span>
-            <span className="text-xs font-black uppercase tracking-widest text-slate-600 mt-2">Avg Performance Boost</span>
-          </BentoBox>
+          {PORTFOLIO_DATA.caseStudies?.[1] && (
+            <BentoBox bgColor="bg-[#EF959C]" className="col-span-1 sm:col-span-2 lg:col-span-2 border-none flex flex-col justify-between text-white" onClick={() => openProjectModal(PORTFOLIO_DATA.caseStudies[1])}>
+              <div>
+                <ShoppingBag size={24} className="mb-4" />
+                <span className="text-[10px] font-black uppercase tracking-widest opacity-60">Client Strategy</span>
+                <h5 className="text-xl font-black leading-tight mt-1">Along Came Loulou</h5>
+              </div>
+              <div className="flex items-center justify-between mt-4">
+                <span className="text-xs font-bold py-1 px-3 bg-white/20 rounded-full">WooCommerce</span>
+                <ArrowUpRight size={18} />
+              </div>
+            </BentoBox>
+          )}
 
-          <BentoBox title="Philosophy" icon={Sparkles} className="col-span-1 sm:col-span-2 lg:col-span-2 bg-white">
-            <ul className="space-y-4 font-bold text-xs uppercase tracking-widest text-slate-500">
-              <li className="flex items-center gap-3"><CheckCircle2 size={16} className="text-[#95ADB6]" /> Speed over bloat</li>
-              <li className="flex items-center gap-3"><CheckCircle2 size={16} className="text-[#CBB3BF]" /> Interaction first</li>
-              <li className="flex items-center gap-3"><CheckCircle2 size={16} className="text-[#EF959C]" /> User-centric logic</li>
-            </ul>
-          </BentoBox>
+          {PORTFOLIO_DATA.caseStudies?.[2] && (
+            <BentoBox bgColor="bg-white" className="col-span-1 sm:col-span-2 lg:col-span-2 border-none flex flex-col justify-between" onClick={() => openProjectModal(PORTFOLIO_DATA.caseStudies[2])}>
+              <div>
+                <Globe size={24} className="mb-4 text-[#95ADB6]" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Consultancy</span>
+                <h5 className="text-xl font-black leading-tight mt-1">Freelance Hub</h5>
+              </div>
+              <div className="flex items-center justify-between mt-4">
+                <span className="text-xs font-bold py-1 px-3 bg-slate-100 rounded-full">Coming Soon</span>
+                <ArrowUpRight size={18} className="text-slate-300" />
+              </div>
+            </BentoBox>
+          )}
 
           <div className="col-span-1 sm:col-span-2 lg:col-span-6 mt-12 mb-8">
             <h2 className="text-sm font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-4"><span className="h-2 w-2 rounded-full bg-slate-800" /> Strategic Technical Impact</h2>
