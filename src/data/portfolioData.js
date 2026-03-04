@@ -22,7 +22,11 @@ export const PORTFOLIO_DATA = {
     description: "Senior Full-Stack Engineer with 15+ years of experience deconstructing complex requirements into performant, maintainable digital ecosystems.",
     email: "brian.hodgebh@gmail.com",
     github: "https://github.com/sadzebra",
-    linkedin: "https://www.linkedin.com/in/brian-hodge-bh/"
+    linkedin: "https://www.linkedin.com/in/brian-hodge-bh/",
+    seo: {
+      title: "Brian Hodge | Senior Full-Stack Engineer & Product Architect",
+      description: "Senior Full-Stack Engineer with 15+ years experience building high-performance digital ecosystems, headless e-commerce, and scalable technical architectures."
+    }
   },
 
   techStacks: [

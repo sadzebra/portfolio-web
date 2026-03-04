@@ -42,6 +42,16 @@ export default function App() {
   const strategicValue = PORTFOLIO_DATA.strategicValue;
 
   useEffect(() => {
+    if (PORTFOLIO_DATA.profile.seo) {
+      document.title = PORTFOLIO_DATA.profile.seo.title;
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (metaDescription) {
+        metaDescription.setAttribute('content', PORTFOLIO_DATA.profile.seo.description);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     setMounted(true);
 
     // Auto-cycle Tech Stack
