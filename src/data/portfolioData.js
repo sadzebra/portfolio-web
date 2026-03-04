@@ -40,7 +40,7 @@ export const PORTFOLIO_DATA = {
     },
     {
       category: "DevOps & Tools",
-      skills: ['AWS', 'Docker', 'CI/CD', 'Git', 'BitBucket', 'Docker']
+      skills: ['AWS', 'Docker', 'CI/CD', 'Git', 'BitBucket']
     }
   ],
 
