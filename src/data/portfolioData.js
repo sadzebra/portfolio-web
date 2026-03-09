@@ -289,6 +289,31 @@ export const PORTFOLIO_DATA = {
   ],
 
   journalPosts: [
+    {
+      id: "bento-architecture",
+      title: "Bento Architecture: Engineering a Senior Portfolio",
+      date: "Mar 05",
+      readTime: "8 min",
+      category: "Engineering",
+      excerpt: "A deep dive into how this website was built using a modular 'Shell and Content' pattern to unify 15+ years of full-stack expertise.",
+      content: `Treating a portfolio as a product rather than a document changes the engineering approach. This site wasn't built from a template; it was architected as a modular React ecosystem designed to scale with a decade and a half of technical history.
+
+# The Technical Stack
+The foundation is built on **Next.js** for its robust routing and server-side capabilities, styled with **Tailwind CSS** for rapid, utility-first UI development. For icons, I leveraged **Lucide React**, ensuring a consistent visual language across all interactive elements.
+
+### The 'Shell and Content' Pattern
+One of the primary challenges was balancing diverse content types—Labs, Client Case Studies, and a Journal—without creating page bloat. 
+I implemented a centralized data schema that decouples the content from the UI logic. This allows the \`App.jsx\` to function as a "Shell." When a user interacts with a Bento tile, a **Unified Modal System** dynamically injects the relevant component based on the state.
+
+### Strategic Hosting & CI/CD
+Hosting is optimized for global performance using a **Vercel** deployment pipeline. This ensures:
+1. **Edge Deployment:** Sub-second delivery of assets.
+2. **CI/CD Integration:** Automatic builds triggered by GitHub commits.
+3. **Programmatic SEO:** Metadata is injected at the layout level.
+
+### Future Scalability
+By using this modular grid, adding a new "Experimental Lab" is as simple as adding an object to an array. The UI adapts automatically, maintaining the bento rhythm while keeping the core bundle size lean.`
+    },
     { id: "headless", title: "The Case for Headless E-commerce in 2024", date: "Feb 12", readTime: "6 min", category: "Architecture", excerpt: "Decoupling is no longer a luxury, but a necessity for enterprise scaling." },
     { id: "seo", title: "Technical SEO for High-Res Catalogs", date: "Jan 28", readTime: "4 min", category: "Growth", excerpt: "Optimizing media-heavy vintage storefronts for organic discovery." }
   ]

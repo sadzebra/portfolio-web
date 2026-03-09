@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import BentoBox from './BentoBox';
-import ProjectDetail from './ProjectDetail';
 import ContactForm from './ContactForm';
 import WorkHistory from './WorkHistory';
 import {
@@ -26,19 +26,11 @@ import {
   Rocket,
   BookOpen,
   Calendar,
-  Globe
+  Globe,
+  Clock
 } from 'lucide-react';
 import ModalWindow from './Modal';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
-
-const BlogContent = ({ post }) => (
-  <div className="pt-2 space-y-4">
-    <div className="text-xs text-[#95ADB6] font-black uppercase tracking-widest">{post.category}</div>
-    <p className="text-lg text-slate-700 font-medium leading-relaxed whitespace-pre-line">{post.excerpt}</p>
-    <div className="h-px bg-slate-100 my-4" />
-    <p className="text-sm text-slate-500 font-medium">This is a summary of the technical deep-dive. The full article explores the architectural implications and performance metrics in detail.</p>
-  </div>
-);
 
 const JournalArchive = ({ posts, onSelect }) => (
   <div className="space-y-4 pt-2">
@@ -66,9 +58,52 @@ const JournalArchive = ({ posts, onSelect }) => (
   </div>
 );
 
+const BlogContent = ({ post }) => {
+  const [html, setHtml] = useState('');
+
+  useEffect(() => {
+    if (window.marked && post.content) {
+      setHtml(window.marked.parse(post.content));
+    } else if (post.content) {
+      console.log("fall back function")
+      // Fallback if script takes a second to load or fails
+      setHtml(post.content.replace(/\n/g, '<br />'));
+    }
+  }, [post.content]);
+
+  return (
+    <div className="pt-2 space-y-6">
+      <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-[#95ADB6]">
+        <span>{post.category}</span>
+        <span className="h-1 w-1 rounded-full bg-slate-200" />
+        <span className="flex items-center gap-1.5"><Calendar size={12} /> {post.date}</span>
+        <span className="h-1 w-1 rounded-full bg-slate-200" />
+        <span className="flex items-center gap-1.5"><Clock size={12} /> {post.readTime} read</span>
+      </div>
+
+      <div className="prose prose-slate max-w-none prose-headings:font-black prose-headings:tracking-tighter prose-p:text-slate-600 prose-p:font-medium prose-p:leading-relaxed prose-strong:text-slate-900 prose-strong:font-black">
+        <p className="text-xl text-slate-800 font-bold leading-relaxed mb-8 border-l-4 border-[#EF959C] pl-6">{post.excerpt}</p>
+
+        {/* Rendered Markdown */}
+        <div
+          className="markdown-content space-y-4"
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      </div>
+
+      <div className="h-px bg-slate-100 my-8" />
+      <div className="flex items-center justify-between">
+        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">End of Technical Entry</p>
+        <div className="flex gap-2">
+          <button className="h-8 w-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-slate-100 transition-colors"><Linkedin size={14} /></button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function App() {
   const [mounted, setMounted] = useState(false);
-  const [activeProject, setActiveProject] = useState(null);
   const [activeStackSlide, setActiveStackSlide] = useState(0);
   const [activeModal, setActiveModal] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
@@ -92,6 +127,16 @@ export default function App() {
   useEffect(() => {
     setMounted(true);
 
+    // Dynamic Markdown Parser Loading
+    if (!window.marked) {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+      script.async = true;
+      // When the library finally lands, we don't need a specific trigger here
+      // as BlogContent uses a recursive check pattern.
+      document.head.appendChild(script);
+    }
+
     // Auto-cycle Tech Stack
     const timer = setInterval(() => {
       setActiveStackSlide((prev) => (prev + 1) % techStacks.length);
@@ -102,22 +147,9 @@ export default function App() {
 
   if (!mounted) return null;
 
-  if (activeProject) {
-    return <ProjectDetail project={activeProject} onBack={() => setActiveProject(null)} />;
-  }
-
   const openArchiveModal = () => {
     setActiveModal('archive');
   };
-
-
-
-  // Palette Mapping:
-  // #8DA1B9 - brand-slate
-  // #95ADB6 - brand-teal
-  // #CBB3BF - brand-mauve
-  // #DBC7BE - brand-beige
-  // #EF959C - brand-pink
 
   return (
     <div className="min-h-screen bg-[#F9F6F4] p-4 text-slate-700 selection:bg-bran-pink/30 md:p-8 lg:p-12 font-sans">
@@ -244,73 +276,79 @@ export default function App() {
             <span className="h-px flex-1 bg-black/5 mx-6"></span>
           </div>
 
+          {/* Hardcoding the id here is a terrible idea and needs to be changed, would be better if this data came from a database. */}
           <BentoBox
             bgColor={weekendProjects[1].color}
             className="col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-1 border-none flex flex-col items-center justify-center text-center p-8 min-h-[220px]"
-            onClick={() => setActiveProject(weekendProjects[1])}
           >
-            <Film size={32} className="text-white mb-4 transition-transform group-hover:scale-110 duration-500" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-white leading-tight">{weekendProjects[1].title}</span>
-            <ArrowUpRight size={14} className="absolute top-6 right-6 text-white/40 group-hover:text-white transition-colors" />
+            <Link href={`projects/1`} className="flex flex-col items-center justify-center w-full h-full text-center">
+              <Film size={32} className="text-white mb-4 transition-transform group-hover:scale-110 duration-500" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-white leading-tight">{weekendProjects[1].title}</span>
+              <ArrowUpRight size={14} className="absolute top-6 right-6 text-white/40 group-hover:text-white transition-colors" />
+            </Link>
           </BentoBox>
 
           <BentoBox
             bgColor={weekendProjects[2].color}
             className="col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-1 border-none flex flex-col items-center justify-center text-center p-8 min-h-[220px]"
-            onClick={() => setActiveProject(weekendProjects[2])}
           >
-            <Coffee size={32} className="text-white mb-4 transition-transform group-hover:scale-110 duration-500" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-white leading-tight">{weekendProjects[2].title}</span>
-            <ArrowUpRight size={14} className="absolute top-6 right-6 text-white/40 group-hover:text-white transition-colors" />
+            <Link href={`projects/2`} className="flex flex-col items-center justify-center w-full h-full text-center">
+              <Coffee size={32} className="text-white mb-4 transition-transform group-hover:scale-110 duration-500" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-white leading-tight">{weekendProjects[2].title}</span>
+              <ArrowUpRight size={14} className="absolute top-6 right-6 text-white/40 group-hover:text-white transition-colors" />
+            </Link>
           </BentoBox>
 
           <BentoBox
             bgColor={weekendProjects[0].color}
             className="col-span-1 row-span-2 sm:col-span-2 lg:col-span-4 lg:row-span-2 p-0 flex flex-col border-none text-white cursor-pointer"
-            onClick={() => setActiveProject(weekendProjects[0])}
           >
-            <div className="p-10">
-              <div className="flex items-center justify-between mb-4"><span className="text-xs font-black uppercase tracking-[0.2em] text-white/60">Featured Lab</span><ExternalLink size={20} className="text-white/60" /></div>
-              <h4 className="text-4xl font-black mb-4 tracking-tighter leading-none">{PORTFOLIO_DATA.weekendProjects[0].title}</h4>
-              <p className="text-white/80 text-lg font-medium max-w-sm">{PORTFOLIO_DATA.weekendProjects[0].shortDescription}</p>
-            </div>
+            <Link href="projects/0">
+              <div className="p-10">
+                <div className="flex items-center justify-between mb-4"><span className="text-xs font-black uppercase tracking-[0.2em] text-white/60">Featured Lab</span><ExternalLink size={20} className="text-white/60" /></div>
+                <h4 className="text-4xl font-black mb-4 tracking-tighter leading-none">{PORTFOLIO_DATA.weekendProjects[0].title}</h4>
+                <p className="text-white/80 text-lg font-medium max-w-sm">{PORTFOLIO_DATA.weekendProjects[0].shortDescription}</p>
+              </div>
 
-            {/* META MOCKUP: Portfolio-style branding blocks */}
-            <div className="mt-auto px-10">
-              <div className="h-56 w-full rounded-t-[3rem] bg-white/10 backdrop-blur-md border-x border-t border-white/20 p-6 flex flex-col gap-3">
-                <div className="flex gap-3 h-1/2">
-                  <div className="w-2/3 bg-[#DBC7BE]/30 rounded-2xl border border-white/10" />
-                  <div className="w-1/3 flex flex-col gap-3">
-                    <div className="h-full bg-[#95ADB6]/30 rounded-xl border border-white/10" />
-                    <div className="h-full bg-[#EF959C]/30 rounded-xl border border-white/10" />
+              {/* META MOCKUP: Portfolio-style branding blocks */}
+              <div className="mt-auto px-10">
+                <div className="h-56 w-full rounded-t-[3rem] bg-white/10 backdrop-blur-md border-x border-t border-white/20 p-6 flex flex-col gap-3">
+                  <div className="flex gap-3 h-1/2">
+                    <div className="w-2/3 bg-[#DBC7BE]/30 rounded-2xl border border-white/10" />
+                    <div className="w-1/3 flex flex-col gap-3">
+                      <div className="h-full bg-[#95ADB6]/30 rounded-xl border border-white/10" />
+                      <div className="h-full bg-[#EF959C]/30 rounded-xl border border-white/10" />
+                    </div>
+                  </div>
+                  <div className="flex gap-3 h-1/2">
+                    <div className="w-1/3 bg-[#8DA1B9]/30 rounded-xl border border-white/10" />
+                    <div className="w-2/3 bg-white/10 rounded-2xl border border-white/10" />
                   </div>
                 </div>
-                <div className="flex gap-3 h-1/2">
-                  <div className="w-1/3 bg-[#8DA1B9]/30 rounded-xl border border-white/10" />
-                  <div className="w-2/3 bg-white/10 rounded-2xl border border-white/10" />
-                </div>
               </div>
-            </div>
+            </Link>
           </BentoBox>
 
           <BentoBox
             bgColor={weekendProjects[3].color}
             className="col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-1 border-none flex flex-col items-center justify-center text-center p-8 min-h-[220px]"
-            onClick={() => setActiveProject(weekendProjects[3])}
           >
-            <Binary size={32} className="text-white mb-4 transition-transform group-hover:scale-110 duration-500" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-white leading-tight">{weekendProjects[3].title}</span>
-            <ArrowUpRight size={14} className="absolute top-6 right-6 text-white/40 group-hover:text-white transition-colors" />
+            <Link href="projects/3" className="flex flex-col items-center justify-center w-full h-full text-center">
+              <Binary size={32} className="text-white mb-4 transition-transform group-hover:scale-110 duration-500" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-white leading-tight">{weekendProjects[3].title}</span>
+              <ArrowUpRight size={14} className="absolute top-6 right-6 text-white/40 group-hover:text-white transition-colors" />
+            </Link>
           </BentoBox>
 
           <BentoBox
             bgColor={weekendProjects[4].color}
             className="col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-1 border-none flex flex-col items-center justify-center text-center p-8 min-h-[220px]"
-            onClick={() => setActiveProject(weekendProjects[4])}
           >
-            <Box size={32} className="text-white mb-4 transition-transform group-hover:scale-110 duration-500" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-white leading-tight">{weekendProjects[4].title}</span>
-            <ArrowUpRight size={14} className="absolute top-6 right-6 text-white/40 group-hover:text-white transition-colors" />
+            <Link href="projects/4" className="flex flex-col items-center justify-center w-full h-full text-center">
+              <Box size={32} className="text-white mb-4 transition-transform group-hover:scale-110 duration-500" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-white leading-tight">{weekendProjects[4].title}</span>
+              <ArrowUpRight size={14} className="absolute top-6 right-6 text-white/40 group-hover:text-white transition-colors" />
+            </Link>
           </BentoBox>
 
           <BentoBox bgColor={callToAction[0].bgColor} className="col-span-1 sm:col-span-2 lg:col-span-6 border-none text-white flex flex-col md:flex-row items-center justify-between gap-8 p-12 my-4">
@@ -334,84 +372,90 @@ export default function App() {
           </div>
 
           {PORTFOLIO_DATA.caseStudies?.[0] && (
-            <BentoBox bgColor="bg-brand-teal" className="col-span-1 row-span-2 sm:col-span-2 lg:col-span-4 lg:row-span-2 p-0 flex flex-col border-none text-white cursor-pointer" onClick={() => openProjectModal(PORTFOLIO_DATA.caseStudies[0])}>
-              <div className="p-10">
-                <div className="flex items-center justify-between mb-4"><span className="text-xs font-black uppercase tracking-[0.2em] text-white/60">Featured Experience</span><ExternalLink size={20} className="text-white/60" /></div>
-                <h4 className="text-4xl font-black mb-4 tracking-tighter leading-none">{PORTFOLIO_DATA.caseStudies[0].title}</h4>
-                <p className="text-white/80 text-lg font-medium max-w-sm">{PORTFOLIO_DATA.caseStudies[0].shortDescription}</p>
-              </div>
-              <div className="mt-auto px-10">
-                <div className="h-64 w-full rounded-t-[3rem] bg-white/10 backdrop-blur-md border-x border-t border-white/20 p-6 flex flex-col gap-4 overflow-hidden shadow-2xl">
-                  <div className="flex items-center justify-between">
-                    <div className="h-3 w-16 bg-white/20 rounded-full" />
-                    <div className="flex gap-3">
-                      <div className="h-3 w-8 bg-white/10 rounded-full" />
-                      <div className="h-3 w-8 bg-white/10 rounded-full" />
-                      <div className="h-3 w-3 bg-white/20 rounded-full" />
+            <BentoBox bgColor="bg-brand-teal" className="col-span-1 row-span-2 sm:col-span-2 lg:col-span-4 lg:row-span-2 p-0 flex flex-col border-none text-white cursor-pointer">
+              <Link href="/solutions/0">
+                <div className="p-10">
+                  <div className="flex items-center justify-between mb-4"><span className="text-xs font-black uppercase tracking-[0.2em] text-white/60">Featured Experience</span><ExternalLink size={20} className="text-white/60" /></div>
+                  <h4 className="text-4xl font-black mb-4 tracking-tighter leading-none">{PORTFOLIO_DATA.caseStudies[0].title}</h4>
+                  <p className="text-white/80 text-lg font-medium max-w-sm">{PORTFOLIO_DATA.caseStudies[0].shortDescription}</p>
+                </div>
+                <div className="mt-auto px-10">
+                  <div className="h-64 w-full rounded-t-[3rem] bg-white/10 backdrop-blur-md border-x border-t border-white/20 p-6 flex flex-col gap-4 overflow-hidden shadow-2xl">
+                    <div className="flex items-center justify-between">
+                      <div className="h-3 w-16 bg-white/20 rounded-full" />
+                      <div className="flex gap-3">
+                        <div className="h-3 w-8 bg-white/10 rounded-full" />
+                        <div className="h-3 w-8 bg-white/10 rounded-full" />
+                        <div className="h-3 w-3 bg-white/20 rounded-full" />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-3 flex-1 pt-2">
+                      {[1, 2, 3].map(i => (
+                        <div key={i} className="flex flex-col gap-2">
+                          <div className="aspect-[4/5] w-full bg-white/15 rounded-2xl ring-1 ring-white/5" />
+                          <div className="h-1.5 w-full bg-white/20 rounded-full" />
+                          <div className="h-1.5 w-1/2 bg-white/10 rounded-full" />
+                        </div>
+                      ))}
                     </div>
                   </div>
-
-                  <div className="grid grid-cols-3 gap-3 flex-1 pt-2">
-                    {[1, 2, 3].map(i => (
-                      <div key={i} className="flex flex-col gap-2">
-                        <div className="aspect-[4/5] w-full bg-white/15 rounded-2xl ring-1 ring-white/5" />
-                        <div className="h-1.5 w-full bg-white/20 rounded-full" />
-                        <div className="h-1.5 w-1/2 bg-white/10 rounded-full" />
-                      </div>
-                    ))}
-                  </div>
                 </div>
-              </div>
+              </Link>
             </BentoBox>
           )}
 
           {PORTFOLIO_DATA.caseStudies?.[1] && (
-            <BentoBox bgColor="bg-[#EF959C]" className="col-span-1 sm:col-span-2 lg:col-span-2 border-none flex flex-col justify-between text-white group p-0" onClick={() => { setSelectedProject(PORTFOLIO_DATA.caseStudies[1]); setActiveModal('project'); }}>
-              <div className="p-6 relative">
-                <ArrowUpRight size={18} className="absolute top-6 right-6 text-white/40 group-hover:text-white transition-colors" />
-                <Zap size={20} className="mb-2.5" />
-                <span className="text-[10px] font-black uppercase tracking-widest opacity-60 leading-none">Vitals Optimization</span>
-                <h5 className="text-lg font-black leading-tight mt-1">Thermo Tech</h5>
-              </div>
+            <BentoBox bgColor="bg-[#EF959C]" className="col-span-1 sm:col-span-2 lg:col-span-2 border-none flex flex-col justify-between text-white group p-0">
+              <Link href="solutions/1">
+                <div className="p-6 relative">
+                  <ArrowUpRight size={18} className="absolute top-6 right-6 text-white/40 group-hover:text-white transition-colors" />
+                  <Zap size={20} className="mb-2.5" />
+                  <span className="text-[10px] font-black uppercase tracking-widest opacity-60 leading-none">Vitals Optimization</span>
+                  <h5 className="text-lg font-black leading-tight mt-1">Thermo Tech</h5>
+                </div>
 
-              {/* Performance Peek */}
-              <div className="bg-black/10 backdrop-blur-md p-5 border-t border-white/10 flex flex-col gap-3 mb-4 mx-4 rounded-3xl">
-                <div className="flex items-center justify-between">
-                  <div className="h-10 w-10 rounded-full border-4 border-white/10 border-r-white flex items-center justify-center text-[10px] font-black">99</div>
-                  <div className="flex gap-1 items-end">
-                    <div className="w-1 h-2 bg-white/20 rounded-full" />
-                    <div className="w-1 h-5 bg-white/40 rounded-full" />
-                    <div className="w-1 h-1.5 bg-white/20 rounded-full" />
+                {/* Performance Peek */}
+                <div className="bg-black/10 backdrop-blur-md p-5 border-t border-white/10 flex flex-col gap-3 mb-4 mx-4 rounded-3xl">
+                  <div className="flex items-center justify-between">
+                    <div className="h-10 w-10 rounded-full border-4 border-white/10 border-r-white flex items-center justify-center text-[10px] font-black">99</div>
+                    <div className="flex gap-1 items-end">
+                      <div className="w-1 h-2 bg-white/20 rounded-full" />
+                      <div className="w-1 h-5 bg-white/40 rounded-full" />
+                      <div className="w-1 h-1.5 bg-white/20 rounded-full" />
+                    </div>
+                  </div>
+                  <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full w-4/5 bg-white/40 rounded-full" />
                   </div>
                 </div>
-                <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-                  <div className="h-full w-4/5 bg-white/40 rounded-full" />
-                </div>
-              </div>
+              </Link>
             </BentoBox>
           )}
 
           {PORTFOLIO_DATA.caseStudies?.[2] && (
-            <BentoBox bgColor="bg-[#8DA1B9]" className="col-span-1 sm:col-span-2 lg:col-span-2 border-none flex flex-col justify-between text-white group p-0" onClick={() => { setSelectedProject(PORTFOLIO_DATA.caseStudies[2]); setActiveModal('project'); }}>
-              <div className="p-6 relative">
-                <ArrowUpRight size={18} className="absolute top-6 right-6 text-white/20 group-hover:text-white transition-colors" />
-                <Globe size={20} className="mb-2.5 text-white" />
-                <span className="text-[10px] font-black uppercase tracking-widest text-white/40 leading-none">Consultancy</span>
-                <h5 className="text-lg font-black leading-tight mt-1 text-white">Freelance Hub</h5>
-              </div>
+            <BentoBox bgColor="bg-[#8DA1B9]" className="col-span-1 sm:col-span-2 lg:col-span-2 border-none flex flex-col justify-between text-white group p-0">
+              <Link href="solutions/2">
+                <div className="p-6 relative">
+                  <ArrowUpRight size={18} className="absolute top-6 right-6 text-white/20 group-hover:text-white transition-colors" />
+                  <Globe size={20} className="mb-2.5 text-white" />
+                  <span className="text-[10px] font-black uppercase tracking-widest text-white/40 leading-none">Consultancy</span>
+                  <h5 className="text-lg font-black leading-tight mt-1 text-white">Freelance Hub</h5>
+                </div>
 
-              {/* Glassy Terminal Peek adapted for Lavender Background */}
-              <div className="bg-white/15 backdrop-blur-md p-5 border-t border-white/5 flex flex-col gap-1.5 mb-4 mx-4 rounded-3xl">
-                <div className="flex gap-1 mb-1">
-                  <div className="w-1 h-1 rounded-full bg-white/30" />
-                  <div className="w-1 h-1 rounded-full bg-white/30" />
-                  <div className="w-1 h-1 rounded-full bg-white/30" />
+                {/* Glassy Terminal Peek adapted for Lavender Background */}
+                <div className="bg-white/15 backdrop-blur-md p-5 border-t border-white/5 flex flex-col gap-1.5 mb-4 mx-4 rounded-3xl">
+                  <div className="flex gap-1 mb-1">
+                    <div className="w-1 h-1 rounded-full bg-white/30" />
+                    <div className="w-1 h-1 rounded-full bg-white/30" />
+                    <div className="w-1 h-1 rounded-full bg-white/30" />
+                  </div>
+                  <div className="font-mono text-[8px] text-white/80 leading-tight">
+                    <span className="text-white font-bold">brian@hub:</span>~$ deploy <br />
+                    <span className="text-slate-100 italic font-medium">Digital strategy active.</span>
+                  </div>
                 </div>
-                <div className="font-mono text-[8px] text-white/80 leading-tight">
-                  <span className="text-white font-bold">brian@hub:</span>~$ deploy <br />
-                  <span className="text-slate-100 italic font-medium">Digital strategy active.</span>
-                </div>
-              </div>
+              </Link>
             </BentoBox>
           )}
 
@@ -488,22 +532,10 @@ export default function App() {
       </div>
       <ModalWindow
         isOpen={activeModal !== null}
-        onClose={() => { setActiveModal(null); setActiveProject(null); setSelectedPost(null); }}
-        title={
-          activeModal === 'contact' ? "Let's build something great." :
-            activeModal === 'history' ? "Career Timeline" :
-              activeModal === 'blog' ? selectedPost?.title :
-                activeModal === 'archive' ? "Technical Journal Archive" :
-                  activeProject?.title
-        }
-        subtitle={
-          activeModal === 'contact' ? "Tell me about your project or opportunity." :
-            activeModal === 'history' ? "15+ Years Experience" :
-              activeModal === 'blog' ? "Deep Dive" :
-                activeModal === 'archive' ? "Explore full entries" :
-                  activeProject?.type
-        }
-        maxWidth={activeModal === 'history' || activeModal === 'archive' ? "max-w-4xl" : "max-w-lg"}
+        onClose={() => { setActiveModal(null); setSelectedPost(null); }}
+        title={activeModal === 'contact' ? "Let's Talk" : "Work History"}
+        subtitle={activeModal === 'contact' ? "Tell me about your project." : "15+ Years Experience"}
+        maxWidth={activeModal === 'history' || activeModal === 'archive' || activeModal === 'blog' ? "max-w-4xl" : "max-w-lg"}
       >
         {activeModal === 'contact' && <ContactForm onSuccess={() => setActiveModal(null)} />}
         {activeModal === 'history' && (
@@ -526,22 +558,30 @@ export default function App() {
             ))}
           </div>
         )}
-        {activeModal === 'project' && activeProject && (
-          <div className="pt-2 space-y-5">
-            <div className={`aspect-video rounded-3xl ${activeProject.color} flex items-center justify-center text-white`}>
-              {(() => {
-                const ProjectIcon = activeProject.icon;
-                return <ProjectIcon size={48} />;
-              })()}
-            </div>
-            <p className="text-base text-slate-600 font-medium leading-relaxed whitespace-pre-line">{activeProject.description}</p>
-          </div>
-        )}
         {activeModal === 'blog' && selectedPost && (
           <BlogContent post={selectedPost} />
         )}
         {activeModal === 'archive' && <JournalArchive posts={PORTFOLIO_DATA.journalPosts} onSelect={(post) => { setSelectedPost(post); setActiveModal('blog'); }} />}
       </ModalWindow>
+
+      <style>{`
+        @keyframes bounce-slow {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
+        }
+        .animate-bounce-slow { animation: bounce-slow 4s ease-in-out infinite; }
+
+        /* SCORCHING HOT MARKDOWN STYLES */
+        .markdown-content h1 { font-size: 2.25rem; font-weight: 900; margin-top: 2.5rem; margin-bottom: 1.25rem; color: #0f172a; letter-spacing: -0.05em; line-height: 1; }
+        .markdown-content h2 { font-size: 1.75rem; font-weight: 900; margin-top: 2rem; margin-bottom: 1rem; color: #1e293b; letter-spacing: -0.025em; line-height: 1.1; }
+        .markdown-content h3 { font-size: 1.4rem; font-weight: 800; margin-top: 1.75rem; margin-bottom: 0.75rem; color: #1e293b; letter-spacing: -0.01em; }
+        .markdown-content p { margin-bottom: 1.5rem; color: #475569; line-height: 1.8; font-size: 1.05rem; }
+        .markdown-content strong { color: #0f172a; font-weight: 800; }
+        .markdown-content ul { list-style-type: none; margin-left: 0; margin-bottom: 1.5rem; }
+        .markdown-content li { position: relative; padding-left: 1.5rem; margin-bottom: 0.75rem; color: #475569; font-weight: 500; }
+        .markdown-content li::before { content: "•"; position: absolute; left: 0; color: #EF959C; font-weight: 900; }
+        .markdown-content code { background: #f1f5f9; padding: 0.2rem 0.4rem; rounded: 0.4rem; font-family: monospace; font-size: 0.9em; color: #95ADB6; }
+      `}</style>
     </div >
   );
 }
