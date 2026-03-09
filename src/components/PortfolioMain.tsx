@@ -4,12 +4,12 @@ import Link from 'next/link';
 import BentoBox from './BentoBox';
 import ContactForm from './ContactForm';
 import WorkHistory from './WorkHistory';
+import Header from './Header'
 import {
   GitMerge,
   Linkedin,
   ExternalLink,
   Mail,
-  Terminal,
   Sparkles,
   ArrowUpRight,
   ArrowRight,
@@ -60,13 +60,11 @@ const JournalArchive = ({ posts, onSelect }) => (
 
 const BlogContent = ({ post }) => {
   const [html, setHtml] = useState('');
-
   useEffect(() => {
     if (window.marked && post.content) {
       setHtml(window.marked.parse(post.content));
     } else if (post.content) {
       console.log("fall back function")
-      // Fallback if script takes a second to load or fails
       setHtml(post.content.replace(/\n/g, '<br />'));
     }
   }, [post.content]);
@@ -126,18 +124,13 @@ export default function App() {
 
   useEffect(() => {
     setMounted(true);
-
-    // Dynamic Markdown Parser Loading
     if (!window.marked) {
       const script = document.createElement('script');
       script.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
       script.async = true;
-      // When the library finally lands, we don't need a specific trigger here
-      // as BlogContent uses a recursive check pattern.
       document.head.appendChild(script);
     }
 
-    // Auto-cycle Tech Stack
     const timer = setInterval(() => {
       setActiveStackSlide((prev) => (prev + 1) % techStacks.length);
     }, 5000);
@@ -158,14 +151,7 @@ export default function App() {
         <div className="absolute -right-[10%] top-[10%] h-[500px] w-[500px] rounded-full bg-bran-pink/10 blur-[120px]" />
       </div>
       <div className="mx-auto max-w-7xl relative">
-        <header className="mb-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-[#8DA1B9] shadow-lg shadow-[#8DA1B9]/20 flex items-center justify-center text-white">
-              <Terminal size={20} />
-            </div>
-            <span className="text-2xl font-black tracking-tight text-slate-900">BRIAN HODGE<span className="text-brand-pink">.</span></span>
-          </div>
-        </header>
+        <Header />
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 grid-flow-row">
           <BentoBox
             bgColor="bg-brand-beige"
@@ -415,7 +401,6 @@ export default function App() {
                   <h5 className="text-lg font-black leading-tight mt-1">Thermo Tech</h5>
                 </div>
 
-                {/* Performance Peek */}
                 <div className="bg-black/10 backdrop-blur-md p-5 border-t border-white/10 flex flex-col gap-3 mb-4 mx-4 rounded-3xl">
                   <div className="flex items-center justify-between">
                     <div className="h-10 w-10 rounded-full border-4 border-white/10 border-r-white flex items-center justify-center text-[10px] font-black">99</div>
@@ -443,7 +428,6 @@ export default function App() {
                   <h5 className="text-lg font-black leading-tight mt-1 text-white">Freelance Hub</h5>
                 </div>
 
-                {/* Glassy Terminal Peek adapted for Lavender Background */}
                 <div className="bg-white/15 backdrop-blur-md p-5 border-t border-white/5 flex flex-col gap-1.5 mb-4 mx-4 rounded-3xl">
                   <div className="flex gap-1 mb-1">
                     <div className="w-1 h-1 rounded-full bg-white/30" />
