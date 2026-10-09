@@ -29,12 +29,27 @@ import {
   Globe,
   Clock
 } from 'lucide-react';
+import { marked } from 'marked';
 import ModalWindow from './Modal';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
-const JournalArchive = ({ posts, onSelect }) => (
+interface Post {
+  id: string | number;
+  title: string;
+  category?: string;
+  date?: string;
+  content?: string;
+  [key: string]: any; // Allows additional properties if needed
+}
+
+interface JournalArchiveProps {
+  posts: Post[];
+  onSelect: (post: Post) => void;
+}
+
+const JournalArchive = ({ posts, onSelect }: JournalArchiveProps) => (
   <div className="space-y-4 pt-2">
-    {posts?.map((post) => (
+    {posts?.map((post: Post) => (
       <div
         key={post.id}
         onClick={() => onSelect(post)}
@@ -58,11 +73,11 @@ const JournalArchive = ({ posts, onSelect }) => (
   </div>
 );
 
-const BlogContent = ({ post }) => {
+const BlogContent = ({ post }: { post: Post }) => {
   const [html, setHtml] = useState('');
   useEffect(() => {
-    if (window.marked && post.content) {
-      setHtml(window.marked.parse(post.content));
+    if (post.content) {
+      setHtml(marked.parse(post.content) as string);
     } else if (post.content) {
       console.log("fall back function")
       setHtml(post.content.replace(/\n/g, '<br />'));
@@ -103,8 +118,8 @@ const BlogContent = ({ post }) => {
 export default function App() {
   const [mounted, setMounted] = useState(false);
   const [activeStackSlide, setActiveStackSlide] = useState(0);
-  const [activeModal, setActiveModal] = useState(null);
-  const [selectedPost, setSelectedPost] = useState(null);
+  const [activeModal, setActiveModal] = useState<string | null>(null);
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
   const weekendProjects = PORTFOLIO_DATA.weekendProjects;
   const techStacks = PORTFOLIO_DATA.techStacks;
@@ -124,7 +139,7 @@ export default function App() {
 
   useEffect(() => {
     setMounted(true);
-    if (!window.marked) {
+    if (!marked) {
       const script = document.createElement('script');
       script.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
       script.async = true;
@@ -451,7 +466,10 @@ export default function App() {
           </div>
 
           {PORTFOLIO_DATA.journalPosts?.slice(0, 2).map((post) => (
-            <BentoBox key={post.id} className="col-span-1 sm:col-span-2 lg:col-span-2 border-none bg-white flex flex-col justify-between group" onClick={() => { setSelectedPost(post); setActiveModal('blog'); }}>
+            <BentoBox
+              key={post.id}
+              className="col-span-1 sm:col-span-2 lg:col-span-2 border-none bg-white flex flex-col justify-between group"
+              onClick={() => { setSelectedPost(post); setActiveModal('blog'); }}>
               <div>
                 <div className="flex items-center gap-3 mb-4">
                   <div className="h-8 w-8 rounded-lg bg-slate-50 text-slate-400 flex items-center justify-center ring-1 ring-black/5"><BookOpen size={16} /></div>

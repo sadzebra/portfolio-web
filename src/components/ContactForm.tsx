@@ -1,12 +1,16 @@
 "use client"
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { X, Send, CheckCircle2 } from 'lucide-react';
 
-const ContactModal = ({ onSuccess }) => {
+interface ContactModalProps {
+  onSuccess: () => void; // or () => void if required
+}
+
+const ContactModal = ({ onSuccess }: ContactModalProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setTimeout(() => {

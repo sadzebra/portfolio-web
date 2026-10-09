@@ -1,7 +1,16 @@
-import { useState } from "react";
+import { useState, ReactNode } from "react";
 import { X, CheckCircle2, Send } from 'lucide-react';
 
-const ModalWindow = ({ isOpen, onClose, title, subtitle, children, maxWidth = "max-w-lg" }) => {
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  subtitle: string;
+  children: ReactNode;
+  maxWidth: string;
+}
+
+const ModalWindow = ({ isOpen, onClose, title, subtitle, children, maxWidth = "max-w-lg" }: ModalProps) => {
   if (!isOpen) return null;
 
   return (

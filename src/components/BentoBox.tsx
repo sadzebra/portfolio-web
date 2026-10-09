@@ -1,4 +1,16 @@
-const BentoBox = ({ children, className = "", title, icon: Icon, bgColor = "bg-white", onClick }) => {
+import { ReactNode, ElementType, MouseEventHandler } from 'react';
+
+interface BentoBoxProps {
+  children?: ReactNode;
+  className?: string;
+  title?: string;
+  icon?: ElementType; // or LucideIcon if using lucide-react specifically
+  bgColor?: string;
+  onClick?: MouseEventHandler<HTMLDivElement>;
+}
+
+
+const BentoBox = ({ children, className = "", title, icon: Icon, bgColor = "bg-white", onClick }: BentoBoxProps) => {
   return (
     <div
       onClick={onClick}
