@@ -10,12 +10,23 @@ import {
 } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
-const SolutionDetail = ({ solutionId }: { projectId: string }) => {
-  const solution = PORTFOLIO_DATA.caseStudies[solutionId];
+const SolutionDetail = ({ solutionId }: { solutionId: string }) => {
+  const solution = PORTFOLIO_DATA.caseStudies.find(
+    (s: any) => s.id === solutionId
+  );
+
+  if (!solution) {
+    return (
+      <div className="p-12 text-center text-slate-500">
+        Solution not found.
+      </div>
+    );
+  }
+
   const galleryItems = solution.gallery || [{ type: 'icon', icon: solution.icon }];
   const [activeMedia, setActiveMedia] = useState(galleryItems[0]);
 
-  const getAssetUrl = (fileName) => {
+  const getAssetUrl = (fileName: string) => {
     if (!fileName)
       return '';
     if (fileName.startsWith('http'))
@@ -39,7 +50,7 @@ const SolutionDetail = ({ solutionId }: { projectId: string }) => {
           <div className={`aspect-video w-full rounded-[3rem] ${solution.color} flex items-center justify-center p-12 shadow-2xl mb-4`}>
             {activeMedia.type === 'image' ? (
               <img
-                src={getAssetUrl(activeMedia.url)}
+                src={getAssetUrl((activeMedia as any).url)}
                 alt="Project screenshot"
                 className="w-full h-full object-cover"
               />
@@ -60,7 +71,7 @@ const SolutionDetail = ({ solutionId }: { projectId: string }) => {
                     <Play size={20} fill="currentColor" />
                   </div>
                 ) : item.type === 'image' ? (
-                  <img src={getAssetUrl(item.url)} className="w-full h-full object-cover" alt="" />
+                  <img src={getAssetUrl((item as any).url)} className="w-full h-full object-cover" alt="" />
                 ) : (
                   <div className={`w-full h-full ${solution.color} flex items-center justify-center text-white/80`}>
                     <ImageIcon size={20} />

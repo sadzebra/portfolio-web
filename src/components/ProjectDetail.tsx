@@ -11,12 +11,23 @@ import {
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
 const ProjectDetail = ({ projectId }: { projectId: string }) => {
-  const project = PORTFOLIO_DATA.weekendProjects[projectId];
-  console.log("Project data: ", project, projectId)
+  // const project = PORTFOLIO_DATA.weekendProjects[projectId];
+  const project = PORTFOLIO_DATA.weekendProjects.find(
+    (p: any) => p.id === projectId
+  );
+
+  if (!project) {
+    return (
+      <div className="p-12 text-center text-slate-500">
+        Project not found.
+      </div>
+    );
+  }
+
   const galleryItems = project.gallery || [{ type: 'icon', icon: project.icon }];
   const [activeMedia, setActiveMedia] = useState(galleryItems[0]);
 
-  const getAssetUrl = (fileName) => {
+  const getAssetUrl = (fileName: string) => {
     if (!fileName)
       return '';
     if (fileName.startsWith('http'))
@@ -42,7 +53,7 @@ const ProjectDetail = ({ projectId }: { projectId: string }) => {
           <div className={`aspect-video w-full rounded-[3rem] ${project.color} flex items-center justify-center p-12 shadow-2xl mb-4`}>
             {activeMedia.type === 'image' ? (
               <img
-                src={getAssetUrl(activeMedia.url)}
+                src={getAssetUrl((activeMedia as any).url)}
                 alt="Project screenshot"
                 className="w-full h-full object-cover"
               />
@@ -63,7 +74,7 @@ const ProjectDetail = ({ projectId }: { projectId: string }) => {
                     <Play size={20} fill="currentColor" />
                   </div>
                 ) : item.type === 'image' ? (
-                  <img src={getAssetUrl(item.url)} className="w-full h-full object-cover" alt="" />
+                  <img src={getAssetUrl((activeMedia as any).url)} className="w-full h-full object-cover" alt="" />
                 ) : (
                   <div className={`w-full h-full ${project.color} flex items-center justify-center text-white/80`}>
                     <ImageIcon size={20} />
